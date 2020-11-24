@@ -16,12 +16,15 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.18.3]
 
     steps:
+    - uses: actions/checkout@master
+    - run: sudo apt-fast install -y google-chrome
     - uses: nanasess/setup-chromedriver@master
       with:
        chromedriver-version: '87.0.4280.20'
+       args: "headless"
     - run: |
        export DISPLAY=:99
        chromedriver --url-base=/wd/hub &
@@ -32,9 +35,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm install
-    - run: npm run build --if-present
-    - run: ./node_modules/.bin/wdio wdio.conf.js
+    - run: |
+        npm ci
+        npm install
+        npm run build --if-present
+        ./node_modules/.bin/wdio wdio.conf.js
       env:
         CI: true
