@@ -5,7 +5,6 @@ describe("Automated Test Case", () => {
     await browser.url("https://www.google.com/");
     const keyword = await $('[name="q"]');
     await keyword.click();
-
     await keyword.setValue("software engineering");
 
     const search = await $("(//input[@name='btnK'])[2]");
